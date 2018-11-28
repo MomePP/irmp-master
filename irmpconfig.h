@@ -132,9 +132,9 @@
  * Change hardware pin here for ARM STM32
  *---------------------------------------------------------------------------------------------------------------------------------------------------
  */
-#elif defined (ARM_STM32)                                               // use C14 as IR input on STM32
-#  define IRMP_PORT_LETTER                      C
-#  define IRMP_BIT_NUMBER                       14
+#elif defined (ARM_STM32)                                               // use PA08 as IR input on STM32
+#  define IRMP_PORT_LETTER                      A
+#  define IRMP_BIT_NUMBER                       8
 
 /*---------------------------------------------------------------------------------------------------------------------------------------------------
  * Change hardware pin here for Stellaris ARM Cortex M4
