@@ -171,8 +171,8 @@
  *---------------------------------------------------------------------------------------------------------------------------------------------------
  */
 #elif defined(BOARD_generic_stm32f103c)  
-#  define IRSND_PIN                             PB6                      // choose an arduino pin with PWM function!
-#  define IRSND_TIMER_NUMBER                    TIMER4
+#  define IRSND_PIN                             PB4                      // choose an arduino pin with PWM function!
+#  define IRSND_TIMER_NUMBER                    TIMER3
 #  define IRSND_TIMER_CHANNEL_NUMBER            1                       // only channel 1 can be used at the moment, others won't work
 /*---------------------------------------------------------------------------------------------------------------------------------------------------
  * Other target systems
