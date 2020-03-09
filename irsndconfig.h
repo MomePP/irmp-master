@@ -41,14 +41,14 @@
 
 // typical protocols, disable here!             Enable  Remarks                 F_INTERRUPTS            Program Space
 #define IRSND_SUPPORT_SIRCS_PROTOCOL            1       // Sony SIRCS           >= 10000                 ~200 bytes
-#define IRSND_SUPPORT_NEC_PROTOCOL              1       // NEC + APPLE          >= 10000                 ~100 bytes
-#define IRSND_SUPPORT_SAMSUNG_PROTOCOL          1       // Samsung + Samsung32  >= 10000                 ~300 bytes
-#define IRSND_SUPPORT_MATSUSHITA_PROTOCOL       1       // Matsushita           >= 10000                 ~200 bytes
-#define IRSND_SUPPORT_KASEIKYO_PROTOCOL         1       // Kaseikyo             >= 10000                 ~300 bytes
+#define IRSND_SUPPORT_NEC_PROTOCOL              0       // NEC + APPLE          >= 10000                 ~100 bytes
+#define IRSND_SUPPORT_SAMSUNG_PROTOCOL          0       // Samsung + Samsung32  >= 10000                 ~300 bytes
+#define IRSND_SUPPORT_MATSUSHITA_PROTOCOL       0       // Matsushita           >= 10000                 ~200 bytes
+#define IRSND_SUPPORT_KASEIKYO_PROTOCOL         0       // Kaseikyo             >= 10000                 ~300 bytes
 
 // more protocols, enable here!                 Enable  Remarks                 F_INTERRUPTS            Program Space
 #define IRSND_SUPPORT_DENON_PROTOCOL            0       // DENON, Sharp         >= 10000                 ~200 bytes
-#define IRSND_SUPPORT_RC5_PROTOCOL              1       // RC5                  >= 10000                 ~150 bytes
+#define IRSND_SUPPORT_RC5_PROTOCOL              0       // RC5                  >= 10000                 ~150 bytes
 #define IRSND_SUPPORT_RC6_PROTOCOL              0       // RC6                  >= 10000                 ~250 bytes
 #define IRSND_SUPPORT_RC6A_PROTOCOL             0       // RC6A                 >= 10000                 ~250 bytes
 #define IRSND_SUPPORT_JVC_PROTOCOL              0       // JVC                  >= 10000                 ~150 bytes
