@@ -553,9 +553,12 @@ irsnd_on (void)
 #  elif defined (BOARD_generic_stm32f103c)                            // ESP8266 (Arduino)
         // analogWrite(IRSND_PIN, 33 * 255 / 100);        // pwm 33%
         gpio_set_mode(PIN_MAP[IRSND_PIN].gpio_device, PIN_MAP[IRSND_PIN].gpio_bit, GPIO_AF_OUTPUT_PP);
-        timer_set_mode(IRSND_TIMER_NUMBER, IRSND_TIMER_CHANNEL_NUMBER, TIMER_PWM);
+        // timer_set_mode(IRSND_TIMER_NUMBER, IRSND_TIMER_CHANNEL_NUMBER, TIMER_PWM);
+        timer_disable_irq(IRSND_TIMER_NUMBER, IRSND_TIMER_CHANNEL_NUMBER);
+        timer_oc_set_mode(IRSND_TIMER_NUMBER, IRSND_TIMER_CHANNEL_NUMBER, TIMER_OC_MODE_PWM_2, TIMER_OC_PE);
+        timer_cc_enable(IRSND_TIMER_NUMBER, IRSND_TIMER_CHANNEL_NUMBER);
         ASSERT(IRSND_TIMER_NUMBER && IRSND_TIMER_CHANNEL_NUMBER);
-        timer_set_compare(IRSND_TIMER_NUMBER, IRSND_TIMER_CHANNEL_NUMBER, 33 * 65535 / 100);
+        timer_set_compare(IRSND_TIMER_NUMBER, IRSND_TIMER_CHANNEL_NUMBER, 50 * 631 / 100);
 
 #  elif defined (__AVR_XMEGA__)
 #    if (IRSND_OCx == IRSND_XMEGA_OC0A)                                 // use OC0A
@@ -632,7 +635,10 @@ irsnd_off (void)
 #  elif defined (__xtensa__)  || defined (BOARD_generic_stm32f103c)                                                          // ESP8266
         // analogWrite(IRSND_PIN, 0);                                                      // pwm off, LOW level
         gpio_set_mode(PIN_MAP[IRSND_PIN].gpio_device, PIN_MAP[IRSND_PIN].gpio_bit, GPIO_AF_OUTPUT_PP);
-        timer_set_mode(IRSND_TIMER_NUMBER, IRSND_TIMER_CHANNEL_NUMBER, TIMER_PWM);
+        // timer_set_mode(IRSND_TIMER_NUMBER, IRSND_TIMER_CHANNEL_NUMBER, TIMER_PWM);
+        timer_disable_irq(IRSND_TIMER_NUMBER, IRSND_TIMER_CHANNEL_NUMBER);
+        timer_oc_set_mode(IRSND_TIMER_NUMBER, IRSND_TIMER_CHANNEL_NUMBER, TIMER_OC_MODE_PWM_2, TIMER_OC_PE);
+        timer_cc_enable(IRSND_TIMER_NUMBER, IRSND_TIMER_CHANNEL_NUMBER);
         ASSERT(IRSND_TIMER_NUMBER && IRSND_TIMER_CHANNEL_NUMBER);
         timer_set_compare(IRSND_TIMER_NUMBER, IRSND_TIMER_CHANNEL_NUMBER, 0);
 
@@ -765,17 +771,19 @@ irsnd_set_freq (IRSND_FREQ_TYPE freq)
         analogWrite(IRSND_PIN, 0);                                                          // pwm off, LOW level
 
 #elif defined (BOARD_generic_stm32f103c) 		
-		timer_init(IRSND_TIMER_NUMBER);
 		timer_pause(IRSND_TIMER_NUMBER);
-		timer_set_mode(IRSND_TIMER_NUMBER, IRSND_TIMER_CHANNEL_NUMBER, TIMER_OUTPUT_COMPARE);
-		timer_set_prescaler(IRSND_TIMER_NUMBER, ((F_CPU / freq)/8) - 1);
-		timer_set_reload(IRSND_TIMER_NUMBER, 7);    
+		timer_set_prescaler(IRSND_TIMER_NUMBER, 2);
+		timer_set_reload(IRSND_TIMER_NUMBER, 631);    
+        timer_generate_update(IRSND_TIMER_NUMBER);
 		timer_resume(IRSND_TIMER_NUMBER);		
         // analogWrite(IRSND_PIN, 0);                                                          // pwm off, LOW level
 		gpio_set_mode(PIN_MAP[IRSND_PIN].gpio_device, PIN_MAP[IRSND_PIN].gpio_bit, GPIO_AF_OUTPUT_PP);
-        timer_set_mode(IRSND_TIMER_NUMBER, IRSND_TIMER_CHANNEL_NUMBER, TIMER_PWM);
+        // timer_set_mode(IRSND_TIMER_NUMBER, IRSND_TIMER_CHANNEL_NUMBER, TIMER_PWM);
+        timer_disable_irq(IRSND_TIMER_NUMBER, IRSND_TIMER_CHANNEL_NUMBER);
+        timer_oc_set_mode(IRSND_TIMER_NUMBER, IRSND_TIMER_CHANNEL_NUMBER, TIMER_OC_MODE_PWM_2, TIMER_OC_PE);
+        timer_cc_enable(IRSND_TIMER_NUMBER, IRSND_TIMER_CHANNEL_NUMBER);
         ASSERT(IRSND_TIMER_NUMBER && IRSND_TIMER_CHANNEL_NUMBER);
-        timer_set_compare(IRSND_TIMER_NUMBER, IRSND_TIMER_CHANNEL_NUMBER, 0);
+        timer_set_compare(IRSND_TIMER_NUMBER, IRSND_TIMER_CHANNEL_NUMBER, 65535);
 
 #  elif defined (__AVR_XMEGA__)
         XMEGA_Timer.CCA = freq;
@@ -887,7 +895,7 @@ irsnd_init (void)
 		
 #  elif defined (BOARD_generic_stm32f103c) 
         // pinMode(IRSND_PIN, PWM);
-        irsnd_set_freq (IRSND_FREQ_36_KHZ);
+        irsnd_set_freq (IRSND_FREQ_38_KHZ);
 		
 #  elif defined (__AVR_XMEGA__)
         IRSND_PORT &= ~(1<<IRSND_BIT);                                              // set IRSND_BIT to low
